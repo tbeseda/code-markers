@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "\"After-the-fact\" text markers for code blocks. Your code is already highlighted (like with hljs: fast, shiki: thorough, others), add some markers to it. This won't add syntax highlighting, but it will add some extra information to your code blocks.",
   "author": "tbeseda",
+  "bugs": {
+    "url": "https://github.com/tbeseda/code-markers/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tbeseda/code-markers.git"
+  },
   "license": "MIT",
   "type": "module",
   "main": "src/index.js",
