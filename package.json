@@ -1,0 +1,44 @@
+{
+  "name": "code-markers",
+  "version": "0.0.0",
+  "description": "\"After-the-fact\" text markers for code blocks. Your code is already highlighted (like with hljs: fast, shiki: thorough, others), add some markers to it. This won't add syntax highlighting, but it will add some extra information to your code blocks.",
+  "author": "tbeseda",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "esbuild src/index.js --bundle --outfile=dist/code-markers-elem.js",
+    "demo": "npx @web/dev-server --node-resolve --watch",
+    "lint": "eslint .",
+    "lint.fix": "npm run lint -- --fix",
+    "release": "npm run build && release-it",
+    "test": "npm run build && npm run lint && node --test"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "esbuild": "0.19.8",
+    "eslint": "^8.54.0",
+    "eslint-config-standard": "^17.1.0",
+    "release-it": "^17.0.0"
+  },
+  "eslintConfig": {
+    "extends": "standard",
+    "ignorePatterns": [
+      "dist"
+    ],
+    "rules": {
+      "space-unary-ops": 0,
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ]
+    }
+  },
+  "dependencies": {
+    "fancy-value-parser": "^0.1.0"
+  }
+}

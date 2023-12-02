@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+  pre {
+    width: 70ch;
+    margin: 25vh auto 0;
+    padding: 0.5em;
+    background-color: #eee;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+  }
+</style>
+<!-- TEST -->
+<pre><code class="language-js hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">s</span> = (<span class="hljs-params">s</span>) =&gt; s
+  <span class="hljs-keyword">const</span> { red, blue, green, grey } =
+    process.<span class="hljs-property">env</span>.<span class="hljs-property">NO_COLOR</span> || process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'--no-color'</span>)
+      ? { <span class="hljs-attr">red</span>: s, <span class="hljs-attr">blue</span>: s, <span class="hljs-attr">green</span>: s, <span class="hljs-attr">grey</span>: s }
+      : {
+          <span class="hljs-attr">red</span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[31m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,
+          <span class="hljs-attr">blue</span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[34m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,
+          <span class="hljs-attr">green</span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[32m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,
+          <span class="hljs-attr">grey</span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[90m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,
+        }</code></pre>

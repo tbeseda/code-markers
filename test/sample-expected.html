@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css">
+<style>
+  pre {
+    width: 70ch;
+    margin: 25vh auto 0;
+    padding: 0.5em;
+    background-color: #eee;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+  }
+  mark {
+    padding: 0 0.2em;
+  }
+  mark.del {
+    background-color: #ebb;
+    text-decoration: line-through;
+  }
+  mark.ins {
+    background-color: #beb;
+    text-decoration: underline;
+  }
+  .code-line {
+    display: inline-block;
+    width: 100%;
+  }
+  .code-line.mark {
+    background-color: lightgoldenrodyellow;
+  }
+  .code-line.del {
+    background-color: lightcoral;
+  }
+  .code-line.ins {
+    background-color: lightblue;
+  }
+</style>
+<!-- TEST -->
+<pre><code class="language-js hljs language-javascript"><span class="code-line mark"><span class="hljs-keyword">const</span> <span class="hljs-title function_">s</span> = (<span class="hljs-params">s</span>) =&gt; s</span>
+<span class="code-line">  <span class="hljs-keyword">const</span> { <mark>red</mark>, <mark class="ins">blue</mark>, <mark class="del">green</mark>, <mark class="del">grey</mark> } =</span>
+<span class="code-line del">    process.<span class="hljs-property">env</span>.<span class="hljs-property">NO_COLOR</span> || process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'--no-color'</span>)</span>
+<span class="code-line">      ? { <span class="hljs-attr"><mark>red</mark></span>: s, <span class="hljs-attr"><mark class="ins">blue</mark></span>: s, <span class="hljs-attr"><mark class="del">green</mark></span>: s, <span class="hljs-attr"><mark class="del">grey</mark></span>: s }</span>
+<span class="code-line">      : {</span>
+<span class="code-line ins">          <span class="hljs-attr"><mark>red</mark></span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[31m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,</span>
+<span class="code-line ins">          <span class="hljs-attr"><mark class="ins">blue</mark></span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[34m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,</span>
+<span class="code-line ins">          <span class="hljs-attr"><mark class="del">green</mark></span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[32m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,</span>
+<span class="code-line ins">          <span class="hljs-attr"><mark class="del">grey</mark></span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[90m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,</span>
+<span class="code-line mark">        }</span></code></pre>
