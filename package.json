@@ -1,6 +1,6 @@
 {
   "name": "code-markers",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "\"After-the-fact\" text markers for code blocks. Your code is already highlighted (like with hljs: fast, shiki: thorough, others), add some markers to it. This won't add syntax highlighting, but it will add some extra information to your code blocks.",
   "author": "tbeseda",
   "license": "MIT",
