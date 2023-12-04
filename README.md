@@ -29,7 +29,7 @@ No Shadow DOM required. Bring your own styles.
 
 ## Install
 
-Depends. If you just want the custom HTML element, get the `./dist/code-markers.js` file to the browser and you can use the `<code-markers>` element.
+Depends. If you just want the custom HTML element, get the `./dist/code-markers-elem.js` file to the browser and you can use the `<code-markers>` element.
 
 This may be easiest by `npm` installing and relying on a bundler to build the file into your project. Node.js usage is the same:
 
