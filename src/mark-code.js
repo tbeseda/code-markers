@@ -1,40 +1,42 @@
 import parseValue from 'fancy-value-parser'
 
 export const marker = {
-  string (html, mark) {
-    const c = mark.mark === 'mark' ? null : mark.mark
+  string (html, { mark, value }) {
+    const c = mark === 'mark' ? null : mark
     html = html.replace(
-      new RegExp(mark.value, 'g'),
-      `<mark${c ? ` class="${c}"` : ''}>${mark.value}</mark>`,
+      new RegExp(value, 'g'),
+      `<mark${c ? ` class="${c}"` : ''}>${value}</mark>`,
     )
     return html
   },
 
-  regex (html, mark) {
-    const c = mark.mark === 'mark' ? null : mark.mark
+  regex (html, { mark, value }) {
+    const c = mark === 'mark' ? null : mark
     html = html.replace(
-      new RegExp(`(${mark.value.source})`, 'g'),
+      new RegExp(`(${value.source})`, 'g'),
       `<mark${c ? ` class="${c}"` : ''}>$1</mark>`,
     )
     return html
   },
 
   number (html, { mark: c, value: lineNo }) {
-    let count = 0
-    html = html.replace(
-      /class="code-line/g,
-      (match, offset) => {
-        count++
-        if (count === lineNo) {
-          return `class="code-line ${c}`
-        }
-        return match
-      })
+    const lines = html.split('\n')
+    const lineIndex = lineNo - 1
+    const lineText = lines[lineIndex]
 
-    return html
+    if (lineText === undefined) return html
+
+    lines[lineIndex] = lineText.replace(
+      /class="code-line/g,
+      `class="code-line ${c}`,
+    )
+
+    return lines.join('\n')
   },
 
   range (html, { mark: c, value: [start, end] }) {
+    // ? is splitting into lines faster?
+    // it's certainly more readable
     let count = 0
     html = html.replace(
       /class="code-line/g,
@@ -47,6 +49,25 @@ export const marker = {
       })
 
     return html
+  },
+
+  pair (html, { mark: c, value: [line, matcher] }) {
+    const lineNo = line.value
+    const { type, value } = matcher
+
+    const lines = html.split('\n')
+    const lineIndex = lineNo - 1
+    const lineText = lines[lineIndex]
+
+    if (lineText === undefined) return html
+
+    if (type === 'string' || type === null || type === 'number') {
+      lines[lineIndex] = marker.string(lineText, { mark: c, value })
+    } else if (type === 'regex') {
+      lines[lineIndex] = marker.regex(lineText, { mark: c, value })
+    }
+
+    return lines.join('\n')
   },
 }
 

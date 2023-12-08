@@ -26,11 +26,11 @@
     "test": "npm run build && npm run lint && node --test"
   },
   "devDependencies": {
-    "@types/node": "^18.19.0",
+    "@types/node": "^18.19.3",
     "esbuild": "0.19.8",
-    "eslint": "^8.54.0",
+    "eslint": "^8.55.0",
     "eslint-config-standard": "^17.1.0",
-    "release-it": "^17.0.0"
+    "release-it": "^17.0.1"
   },
   "eslintConfig": {
     "extends": "standard",
@@ -46,6 +46,6 @@
     }
   },
   "dependencies": {
-    "fancy-value-parser": "^0.1.0"
+    "fancy-value-parser": "^0.3.0"
   }
 }

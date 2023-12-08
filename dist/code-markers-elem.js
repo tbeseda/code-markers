@@ -1,36 +1,84 @@
 (() => {
   // node_modules/fancy-value-parser/index.js
+  var T = {
+    string: "string",
+    regex: "regex",
+    number: "number",
+    boolean: "boolean",
+    range: "range",
+    pair: "pair",
+    set: "set",
+    null: null
+  };
   function parseOption(option) {
     if (typeof option !== "string") {
       throw new TypeError(`Expected string, got ${typeof option}`);
     }
-    const firstChar = option.charAt(0);
     let type;
     let value;
+    if (option.includes(":")) {
+      const [k = null, v = null] = option.split(/:(.*)/s);
+      const parsedKey = k ? parseOption(k) : null;
+      const parsedVal = v ? parseOption(v) : null;
+      type = "pair";
+      value = [parsedKey, parsedVal];
+      let pairKey = null;
+      if (parsedKey) {
+        if ([T.number, T.string].includes(parsedKey.type)) {
+          pairKey = parsedKey.value;
+        } else {
+          pairKey = k;
+        }
+      }
+      let pairVal = null;
+      if (parsedVal) {
+        if ([T.number, T.string, T.regex].includes(parsedVal.type)) {
+          pairVal = parsedVal.value;
+        } else {
+          pairVal = v;
+        }
+      }
+      return {
+        type,
+        value,
+        [pairKey]: pairVal
+      };
+    }
+    if (option === "true") {
+      type = T.boolean;
+      value = true;
+      return { type, value };
+    }
+    if (option === "false") {
+      type = T.boolean;
+      value = false;
+      return { type, value };
+    }
+    const firstChar = option.charAt(0);
     switch (firstChar) {
       case "'":
-        type = "string";
+        type = T.string;
         value = option.substring(1, option.length - 1);
         break;
       case "/":
-        type = "regex";
+        type = T.regex;
         value = new RegExp(option.substring(1, option.length - 1));
         break;
       case "{":
-        type = "set";
+        type = T.set;
         value = option.substring(1, option.length - 1).split(",").map((item) => item.trim()).map(parseOption);
         break;
       default: {
         const n = Number(firstChar);
         if (isNaN(n)) {
-          type = null;
+          type = T.null;
           value = option;
         } else if (option.includes("-")) {
           const [start, end] = option.split("-");
-          type = "range";
+          type = T.range;
           value = [parseInt(start), parseInt(end) || null];
         } else {
-          type = "number";
+          type = T.number;
           value = parseInt(option);
         }
         break;
@@ -41,35 +89,33 @@
 
   // src/mark-code.js
   var marker = {
-    string(html, mark) {
-      const c = mark.mark === "mark" ? null : mark.mark;
+    string(html, { mark, value }) {
+      const c = mark === "mark" ? null : mark;
       html = html.replace(
-        new RegExp(mark.value, "g"),
-        `<mark${c ? ` class="${c}"` : ""}>${mark.value}</mark>`
+        new RegExp(value, "g"),
+        `<mark${c ? ` class="${c}"` : ""}>${value}</mark>`
       );
       return html;
     },
-    regex(html, mark) {
-      const c = mark.mark === "mark" ? null : mark.mark;
+    regex(html, { mark, value }) {
+      const c = mark === "mark" ? null : mark;
       html = html.replace(
-        new RegExp(`(${mark.value.source})`, "g"),
+        new RegExp(`(${value.source})`, "g"),
         `<mark${c ? ` class="${c}"` : ""}>$1</mark>`
       );
       return html;
     },
     number(html, { mark: c, value: lineNo }) {
-      let count = 0;
-      html = html.replace(
+      const lines = html.split("\n");
+      const lineIndex = lineNo - 1;
+      const lineText = lines[lineIndex];
+      if (lineText === void 0)
+        return html;
+      lines[lineIndex] = lineText.replace(
         /class="code-line/g,
-        (match, offset) => {
-          count++;
-          if (count === lineNo) {
-            return `class="code-line ${c}`;
-          }
-          return match;
-        }
+        `class="code-line ${c}`
       );
-      return html;
+      return lines.join("\n");
     },
     range(html, { mark: c, value: [start, end] }) {
       let count = 0;
@@ -84,6 +130,21 @@
         }
       );
       return html;
+    },
+    pair(html, { mark: c, value: [line, matcher] }) {
+      const lineNo = line.value;
+      const { type, value } = matcher;
+      const lines = html.split("\n");
+      const lineIndex = lineNo - 1;
+      const lineText = lines[lineIndex];
+      if (lineText === void 0)
+        return html;
+      if (type === "string" || type === null || type === "number") {
+        lines[lineIndex] = marker.string(lineText, { mark: c, value });
+      } else if (type === "regex") {
+        lines[lineIndex] = marker.regex(lineText, { mark: c, value });
+      }
+      return lines.join("\n");
     }
   };
   function createMarksFromOptions(options) {
