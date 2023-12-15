@@ -16,6 +16,23 @@
     }
     let type;
     let value;
+    if (option === "true") {
+      type = T.boolean;
+      value = true;
+      return { type, value };
+    }
+    if (option === "false") {
+      type = T.boolean;
+      value = false;
+      return { type, value };
+    }
+    const firstChar = option.charAt(0);
+    const lastChar = option.charAt(option.length - 1);
+    if (firstChar === "{" && lastChar === "}") {
+      type = T.set;
+      value = option.substring(1, option.length - 1).split(",").map((item) => item.trim()).map(parseOption);
+      return { type, value };
+    }
     if (option.includes(":")) {
       const [k = null, v = null] = option.split(/:(.*)/s);
       const parsedKey = k ? parseOption(k) : null;
@@ -44,17 +61,6 @@
         [pairKey]: pairVal
       };
     }
-    if (option === "true") {
-      type = T.boolean;
-      value = true;
-      return { type, value };
-    }
-    if (option === "false") {
-      type = T.boolean;
-      value = false;
-      return { type, value };
-    }
-    const firstChar = option.charAt(0);
     switch (firstChar) {
       case "'":
         type = T.string;
@@ -157,6 +163,7 @@
       acc[key] = parsed;
       return acc;
     }, {});
+    console.log(parsedOptions);
     let marks = [];
     for (const [mark, option] of Object.entries(parsedOptions)) {
       if (option.type === "set") {

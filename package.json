@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "build": "esbuild src/index.js --bundle --outfile=dist/code-markers-elem.js",
-    "demo": "npx @web/dev-server --node-resolve --watch",
+    "demo": "npm run build && npx @web/dev-server --node-resolve --watch",
     "lint": "eslint .",
     "lint.fix": "npm run lint -- --fix",
     "release": "npm run build && release-it",
@@ -46,6 +46,6 @@
     }
   },
   "dependencies": {
-    "fancy-value-parser": "^0.3.0"
+    "fancy-value-parser": "^1.0.0"
   }
 }

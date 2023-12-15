@@ -45,8 +45,8 @@
   <p>Highlighted on load (after hljs highlightAll):</p>
   <code-markers
     mark="{1,html}"
-    del="{Unknown mark type:,5}"
-    ins="{3,marker,marks}"
+    del="{Unknown mark type,5:error}"
+    ins="{3,marker,1:marks}"
   >
     <pre><code class="language-javascript">for (const mark of marks) {
   if (marker[mark.type]) {
@@ -126,6 +126,7 @@ for (const mark of marks) {
           <span class="hljs-attr">grey</span>: <span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> <span class="hljs-string">`\u001b[90m<span class="hljs-subst">${s}</span>\u001b[39m`</span>,
         }</code></pre>
   </code-markers>
+
   <script type="module" src="./src/elem.js"></script>
   <script>
     hljs.highlightAll()
