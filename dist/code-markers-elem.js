@@ -163,7 +163,6 @@
       acc[key] = parsed;
       return acc;
     }, {});
-    console.log(parsedOptions);
     let marks = [];
     for (const [mark, option] of Object.entries(parsedOptions)) {
       if (option.type === "set") {
